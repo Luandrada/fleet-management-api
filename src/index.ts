@@ -1,4 +1,5 @@
-import {express} from 'express';
+import express from 'express';
+
 import taxisRoutes from "./routes/taxis.routes";
 
 const PORT = 3000;
