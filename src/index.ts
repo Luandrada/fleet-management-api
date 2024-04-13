@@ -16,13 +16,15 @@ const swaggerSpec = {
 };
 
 const PORT = 3000;
-const app = express ();
-
+export const app = express ();
 
 app.use(express.json());
 app.use('/api', taxisRoutes);
 app.use("/api-doc", swaggerUI.serve , swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
 
-app.listen(PORT);
-
-console.log('Escuchando en ', PORT)
+// Solo inicia el servidor si no estás en un entorno de prueba para no tener error de puerto en uso en los test PREGUNTAR
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log('Escuchando en el puerto', PORT);
+      });
+};
