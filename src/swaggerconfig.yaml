@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Fleet Management API 3.0
+  description: |-
+    [Fleet Management API repository](https://github.com/Laboratoria/DEV013-fleet-management-api)
+  version: 1.0.11
+servers:
+  - url: http://localhost:3000/api
+tags:
+  - name: taxis
+    description: Taxi's list
+paths:
+  /taxis:
+    get:
+      tags:
+        - taxis
+      summary: Get paginated Taxi's info.
+      description: Returns a single pet
+      operationId: getTaxis
+      parameters:
+        - name: page
+          in: query
+          description: Desired page number.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 1
+        - name: limit
+          in: query
+          description: Number of elements per page.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+        - name: query
+          in: query
+          description: Specific keyword.
+          required: false
+          schema:
+            type: string
+            default: ""
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaxisResponse"
+        "400":
+          description: page debe ser un número entero mayor o igual a 1.
+        "500":
+          description: Internal Server Error. Ocurrió un error al obtener los taxis.
+
+components:
+  schemas:
+    Taxi:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        plate:
+          type: string
+          example: MDBH-123
+    TaxisResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Taxi"
+        currentPage:
+          type: string
+        totalPages:
+          type: string
